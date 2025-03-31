@@ -1,0 +1,212 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #4EC0CA;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+#game-container {
+    position: relative;
+    width: 400px;
+    height: 600px;
+    margin: 20px auto;
+    overflow: hidden;
+    border: 5px solid #333;
+    border-radius: 10px;
+    background-color: #4EC0CA;
+}
+
+/* Cloud background */
+#game-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background-image: 
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 200"><path d="M0,100 C150,100 150,50 300,50 C450,50 450,100 600,100 C750,100 750,50 900,50 C1050,50 1050,100 1200,100" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="40"/><path d="M-100,150 C50,150 50,100 200,100 C350,100 350,150 500,150 C650,150 650,100 800,100 C950,100 950,150 1100,150" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="40"/></svg>');
+    background-size: 50% 100%;
+    background-repeat: repeat-x;
+    animation: moveClouds 20s linear infinite;
+}
+
+/* City skyline */
+#game-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 150px;
+    background-image: 
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 150"><rect x="0" y="100" width="40" height="50" fill="%23365D48"/><rect x="60" y="70" width="30" height="80" fill="%23365D48"/><rect x="110" y="50" width="50" height="100" fill="%23365D48"/><rect x="180" y="80" width="35" height="70" fill="%23365D48"/><rect x="230" y="90" width="40" height="60" fill="%23365D48"/><rect x="290" y="60" width="45" height="90" fill="%23365D48"/></svg>');
+    background-size: 300px 100%;
+    background-repeat: repeat-x;
+    opacity: 0.5;
+}
+
+/* Ground */
+.ground {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: linear-gradient(to bottom, #8BC34A 0%, #689F38 100%);
+    border-top: 3px solid #558B2F;
+}
+
+#jethalal {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background-image: url('https://i.kym-cdn.com/entries/icons/original/000/042/661/Screenshot_2022-11-14_at_3.11.58_PM.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 10;
+    transform-origin: center;
+    transition: transform 0.1s;
+    image-rendering: pixelated;  /* Keep the pixel art sharp */
+}
+
+.pipe {
+    position: absolute;
+    width: 60px;
+    background: linear-gradient(to right, #5EAE5E 0%, #43A047 50%, #2E7D32 100%);
+    border: 2px solid #1B5E20;
+    border-radius: 2px;
+}
+
+.pipe.top {
+    top: 0;
+    border-bottom: 10px solid #1B5E20;
+}
+
+.pipe.bottom {
+    bottom: 0;
+    border-top: 10px solid #1B5E20;
+}
+
+/* Pipe cap */
+.pipe::before {
+    content: '';
+    position: absolute;
+    left: -4px;
+    right: -4px;
+    height: 20px;
+    background: linear-gradient(to right, #8BC34A 0%, #689F38 100%);
+    border: 2px solid #1B5E20;
+}
+
+.pipe.top::before {
+    bottom: -2px;
+    border-radius: 0 0 4px 4px;
+}
+
+.pipe.bottom::before {
+    top: -2px;
+    border-radius: 4px 4px 0 0;
+}
+
+#score {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 40px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    z-index: 20;
+}
+
+#game-over {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    display: none;
+    z-index: 30;
+}
+
+#restart-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#restart-btn:hover {
+    background-color: #45a049;
+}
+
+#babita-popup {
+    position: absolute;
+    width: 100px;
+    height: 150px;
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Munmun_Dutta_2011.jpg/640px-Munmun_Dutta_2011.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: none;
+    z-index: 25;
+    animation: popup 1s;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+@keyframes popup {
+    0% { 
+        transform: scale(0) rotate(-10deg); 
+        opacity: 0;
+    }
+    50% { 
+        transform: scale(1.2) rotate(5deg);
+        opacity: 0.8;
+    }
+    100% { 
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+@keyframes moveClouds {
+    from { background-position: 0 0; }
+    to { background-position: 100% 0; }
+}
+
+#instructions {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 18px;
+    text-align: center;
+    z-index: 40;
+    animation: fadeOut 2s forwards;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    70% { opacity: 1; }
+    100% { opacity: 0; }
+}
